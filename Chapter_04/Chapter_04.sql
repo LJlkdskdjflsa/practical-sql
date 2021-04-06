@@ -9,7 +9,7 @@
 -- This is example syntax only; running it will produce an error
 
 COPY table_name
-FROM 'C:\YourDirectory\your_file.csv'
+FROM '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_04/supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
 
 
@@ -130,7 +130,7 @@ SELECT * FROM us_counties_2010;
 -- Windows users: Please check the Note on page xxvii as well.
 
 COPY us_counties_2010
-FROM 'C:\YourDirectory\us_counties_2010.csv'
+FROM '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_04/us_counties_2010.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- Checking the data
@@ -162,7 +162,7 @@ CREATE TABLE supervisor_salaries (
 -- Listing 4-5: Importing salaries data from CSV to three table columns
 
 COPY supervisor_salaries (town, supervisor, salary)
-FROM 'C:\YourDirectory\supervisor_salaries.csv'
+FROM '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_04/supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- Check the data
@@ -176,7 +176,7 @@ DELETE FROM supervisor_salaries;
 CREATE TEMPORARY TABLE supervisor_salaries_temp (LIKE supervisor_salaries);
 
 COPY supervisor_salaries_temp (town, supervisor, salary)
-FROM 'C:\YourDirectory\supervisor_salaries.csv'
+FROM '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_04/supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
 
 INSERT INTO supervisor_salaries (town, county, supervisor, salary)
@@ -191,14 +191,14 @@ SELECT * FROM supervisor_salaries LIMIT 2;
 -- Listing 4-7: Export an entire table with COPY
 
 COPY us_counties_2010
-TO 'C:\YourDirectory\us_counties_export.txt'
+TO '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_04/us_counties_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 
 -- Listing 4-8: Exporting selected columns from a table with COPY
 
 COPY us_counties_2010 (geo_name, internal_point_lat, internal_point_lon)
-TO 'C:\YourDirectory\us_counties_latlon_export.txt'
+TO 'home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_04/us_counties_latlon_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 -- Listing 4-9: Exporting query results with COPY
@@ -208,5 +208,5 @@ COPY (
     FROM us_counties_2010
     WHERE geo_name ILIKE '%mill%'
      )
-TO 'C:\YourDirectory\us_counties_mill_export.txt'
+TO 'home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_04/us_counties_latlon_export/us_counties_mill_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');

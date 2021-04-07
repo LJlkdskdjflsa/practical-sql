@@ -179,7 +179,7 @@ CREATE TABLE us_counties_2000 (
 );
 
 COPY us_counties_2000
-FROM '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_06/us_counties_2000.csv'
+FROM '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_06_join/us_counties_2000.csv'
 WITH (FORMAT CSV, HEADER);
 
 SELECT c2010.geo_name,
@@ -195,7 +195,32 @@ ON c2010.state_fips = c2000.state_fips
    AND c2010.p0010001 <> c2000.p0010001
 ORDER BY pct_change DESC;
 
--- practice 1
+-- practice 1 find the state which dispeared
+SELECT  * FROM us_counties_2000;
+SELECT  * FROM us_counties_2010;
+SELECT c2000.geo_name,
+       c2000.state_us_abbreviation AS state,
+       c2010.geo_name
+FROM us_counties_2000 c2000 LEFT JOIN us_counties_2010 c2010
+ON c2010.state_fips = c2000.state_fips
+WHERE c2010.geo_name IS NULL;
+
+-- Q practice 2 find the median number of population changes of every state
+-- V1
+SELECT
+       median(round( (CAST(c2010.p0010001 AS numeric(8,1)) - c2000.p0010001)
+           / c2000.p0010001 * 100, 1 )) AS pct_change
+FROM us_counties_2010 c2010 INNER JOIN us_counties_2000 c2000
+ON c2010.state_fips = c2000.state_fips;
+
+SELECT sum(p0010001) AS "County Sum",
+       round(avg(p0010001), 0) AS "County Average",
+       median(p0010001) AS "County Median",
+       percentile_cont(.5)
+       WITHIN GROUP (ORDER BY P0010001) AS "50th Percentile"
+FROM us_counties_2010;
+
+-- V2
 
 -- practice 3 which state loss the most population
 SELECT c2010.geo_name,

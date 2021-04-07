@@ -14,6 +14,8 @@ CREATE TABLE natural_key_example (
     last_name varchar(50)
 );
 
+SELECT * FROM "natural_key_example";
+
 -- Drop the table before trying again
 DROP TABLE natural_key_example;
 
@@ -24,6 +26,7 @@ CREATE TABLE natural_key_example (
     last_name varchar(50),
     CONSTRAINT license_key PRIMARY KEY (license_id)
 );
+SELECT * FROM "natural_key_example";
 
 -- Listing 7-2: Example of a primary key violation
 INSERT INTO natural_key_example (license_id, first_name, last_name)
@@ -39,6 +42,7 @@ CREATE TABLE natural_key_composite_example (
     present boolean,
     CONSTRAINT student_key PRIMARY KEY (student_id, school_day)
 );
+SELECT * FROM "natural_key_composite_example";
 
 -- Listing 7-4: Example of a composite primary key violation
 
@@ -92,6 +96,24 @@ VALUES ('A203391', '3/17/2017', 'T229901');
 INSERT INTO registrations (registration_id, registration_date, license_id)
 VALUES ('A75772', '3/17/2017', 'T000001');
 
+
+CASCADE :
+
+DROP TABLE "registrations";
+
+CREATE TABLE registrations (
+    registration_id varchar(10),
+    registration_date date,
+    license_id varchar(10) REFERENCES licenses (license_id) ON DELETE CASCADE ,
+    CONSTRAINT registration_key PRIMARY KEY (registration_id, license_id)
+);
+
+SELECT * FROM "licenses";
+SELECT * FROM "registrations";
+
+DELETE FROM "licenses"
+WHERE "license_id" = "T229901";
+
 -- Listing 7-7: CHECK constraint examples
 
 CREATE TABLE check_constraint_example (
@@ -137,7 +159,7 @@ CREATE TABLE not_null_example (
     last_name varchar(50) NOT NULL,
     CONSTRAINT student_id_key PRIMARY KEY (student_id)
 );
-
+SELECT * FROM not_null_example;
 -- Listing 7-10: Dropping and adding a primary key and a NOT NULL constraint
 
 -- Drop
@@ -165,8 +187,10 @@ CREATE TABLE new_york_addresses (
 );
 
 COPY new_york_addresses
-FROM 'C:\YourDirectory\city_of_new_york.csv'
+FROM '/home/lj/PycharmProjects/practical_sql/practical-sql/Chapter_07_db_design_index/city_of_new_york.csv'
 WITH (FORMAT CSV, HEADER);
+
+SELECT * FROM new_york_addresses;
 
 -- Listing 7-12: Benchmark queries for index performance
 
